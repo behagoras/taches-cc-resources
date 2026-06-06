@@ -11,7 +11,7 @@ allowed-tools: [Read, Task, Bash(ls:*), Bash(mv:*), Bash(git:*)]
 ---
 
 <context>
-Git status: !`git status --short`
+Git status: !`git status --short 2>/dev/null || echo "(not a git repository — git steps will be skipped)"`
 Prompt index: !`cat ./.prompts/index.json 2>/dev/null || echo "no index.json"`
 Recent prompts: !`find ./.prompts -name '*.md' -not -path '*/completed/*' -not -name 'INDEX.md' | sort -t/ -k4 -rn | head -10`
 </context>
@@ -168,6 +168,7 @@ By delegating to a sub-task, the actual implementation work happens in fresh con
 - For parallel execution: ALL Task tool calls MUST be in a single message
 - For sequential execution: Wait for each Task to complete before starting next
 - Archive prompts only after successful completion
+- If the working directory is NOT a git repository (Git status shows "(not a git repository ...)"), SKIP all git staging/commit steps entirely — do not fail, just proceed without committing and note it in the output
 - If any prompt fails, stop sequential execution and report error
 - Provide clear, consolidated results for multiple prompt execution
   </critical_notes>
