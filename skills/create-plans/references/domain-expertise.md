@@ -32,6 +32,7 @@ description: [What this expertise covers]
 ---
 
 <principles>
+
 ## Core Principles
 
 [Fundamental patterns that apply to ALL work in this domain]
@@ -45,9 +46,11 @@ Examples:
 - Framework-specific requirements
 
 **Keep this section comprehensive but concise (~3-5k tokens).**
+
 </principles>
 
 <references_index>
+
 ## Reference Loading Guide
 
 When planning phases, load references based on phase type:
@@ -69,13 +72,16 @@ When planning phases, load references based on phase type:
 - UI/layout phases → ui-patterns.md, design-system.md
 - API/backend phases → api-routes.md, auth.md
 - Integration phases → system-apis.md, third-party.md
+
 </references_index>
 
 <workflows>
+
 ## Optional Workflows
 
 [If domain has specific workflows, list them here]
 [These are NOT auto-loaded - only used when specifically invoked]
+
 </workflows>
 ```
 

@@ -4,6 +4,7 @@ description: Expert guidance for creating, writing, building, and refining Claud
 ---
 
 <essential_principles>
+
 ## How Skills Work
 
 Skills are modular, filesystem-based capabilities that provide domain expertise on demand. This skill teaches how to create effective skills.
@@ -47,14 +48,18 @@ No markdown headings (#, ##, ###) in skill body. Use semantic XML tags:
 <success_criteria>...</success_criteria>
 ```
 
+Put a blank line after every opening tag and before every closing tag, so text never sits flush against the tag.
+
 Keep markdown formatting within content (bold, lists, code blocks).
 
 ### 5. Progressive Disclosure
 
 SKILL.md under 500 lines. Split detailed content into reference files. Load only what's needed for the current workflow.
+
 </essential_principles>
 
 <intake>
+
 What would you like to do?
 
 1. Create new skill
@@ -63,9 +68,11 @@ What would you like to do?
 4. Get guidance
 
 **Wait for response before proceeding.**
+
 </intake>
 
 <routing>
+
 | Response | Next Action | Workflow |
 |----------|-------------|----------|
 | 1, "create", "new", "build" | Ask: "Task-execution skill or domain expertise skill?" | Route to appropriate create workflow |
@@ -92,9 +99,11 @@ What would you like to do?
 - "upgrade to router" → workflows/upgrade-to-router.md
 
 **After reading the workflow, follow it exactly.**
+
 </routing>
 
 <quick_reference>
+
 ## Skill Structure Quick Reference
 
 **Simple skill (single file):**
@@ -133,9 +142,11 @@ scripts/:
   Executable code Claude runs as-is
   (deploy, setup, API calls, data processing)
 ```
+
 </quick_reference>
 
 <reference_index>
+
 ## Domain Knowledge
 
 All in `references/`:
@@ -145,9 +156,11 @@ All in `references/`:
 **Patterns:** common-patterns.md, workflows-and-validation.md
 **Assets:** using-templates.md, using-scripts.md
 **Advanced:** executable-code.md, api-security.md, iteration-and-testing.md
+
 </reference_index>
 
 <workflows_index>
+
 ## Workflows
 
 All in `workflows/`:
@@ -164,9 +177,11 @@ All in `workflows/`:
 | add-script.md | Add a script to existing skill |
 | upgrade-to-router.md | Convert simple skill to router pattern |
 | get-guidance.md | Help decide what kind of skill to build |
+
 </workflows_index>
 
 <yaml_requirements>
+
 ## YAML Frontmatter
 
 Required fields:
@@ -178,9 +193,11 @@ description: ...          # What it does AND when to use it (third person)
 ```
 
 Name conventions: `create-*`, `manage-*`, `setup-*`, `generate-*`, `build-*`
+
 </yaml_requirements>
 
 <success_criteria>
+
 A well-structured skill:
 - Has valid YAML frontmatter
 - Uses pure XML structure (no markdown headings in body)
@@ -189,4 +206,5 @@ A well-structured skill:
 - Keeps SKILL.md under 500 lines
 - Asks minimal clarifying questions only when truly needed
 - Has been tested with real usage
+
 </success_criteria>

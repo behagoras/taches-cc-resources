@@ -1,12 +1,15 @@
 # Workflow: Add a Reference to Existing Skill
 
 <required_reading>
+
 **Read these reference files NOW:**
 1. references/recommended-structure.md
 2. references/skill-structure.md
+
 </required_reading>
 
 <process>
+
 ## Step 1: Select the Skill
 
 ```bash
@@ -45,22 +48,30 @@ Create `references/{reference-name}.md`:
 Use semantic XML tags to structure the content:
 ```xml
 <overview>
+
 Brief description of what this reference covers
+
 </overview>
 
 <patterns>
+
 ## Common Patterns
 [Reusable patterns, examples, code snippets]
+
 </patterns>
 
 <guidelines>
+
 ## Guidelines
 [Best practices, rules, constraints]
+
 </guidelines>
 
 <examples>
+
 ## Examples
 [Concrete examples with explanation]
+
 </examples>
 ```
 
@@ -85,12 +96,15 @@ For each workflow that should use this reference:
 - [ ] Reference is in SKILL.md reference_index
 - [ ] Relevant workflows have it in required_reading
 - [ ] No broken references
+
 </process>
 
 <success_criteria>
+
 Reference addition is complete when:
 - [ ] Reference file created with useful content
 - [ ] Added to reference_index in SKILL.md
 - [ ] Relevant workflows updated to read it
 - [ ] Content is reusable (not workflow-specific)
+
 </success_criteria>

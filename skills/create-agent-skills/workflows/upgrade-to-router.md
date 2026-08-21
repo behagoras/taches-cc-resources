@@ -1,12 +1,15 @@
 # Workflow: Upgrade Skill to Router Pattern
 
 <required_reading>
+
 **Read these reference files NOW:**
 1. references/recommended-structure.md
 2. references/skill-structure.md
+
 </required_reading>
 
 <process>
+
 ## Step 1: Select the Skill
 
 ```bash
@@ -97,10 +100,13 @@ description: {existing description}
 ---
 
 <essential_principles>
+
 [Extracted principles - inline, cannot be skipped]
+
 </essential_principles>
 
 <intake>
+
 **Ask the user:**
 
 What would you like to do?
@@ -109,24 +115,31 @@ What would you like to do?
 ...
 
 **Wait for response before proceeding.**
+
 </intake>
 
 <routing>
+
 | Response | Workflow |
 |----------|----------|
 | 1, "keywords" | `workflows/workflow-a.md` |
 | 2, "keywords" | `workflows/workflow-b.md` |
+
 </routing>
 
 <reference_index>
+
 [List all references by category]
+
 </reference_index>
 
 <workflows_index>
+
 | Workflow | Purpose |
 |----------|---------|
 | workflow-a.md | [What it does] |
 | workflow-b.md | [What it does] |
+
 </workflows_index>
 ```
 
@@ -147,9 +160,11 @@ Invoke the upgraded skill:
 - Does behavior match original skill?
 
 Report any issues.
+
 </process>
 
 <success_criteria>
+
 Upgrade is complete when:
 - [ ] workflows/ directory created with workflow files
 - [ ] references/ directory created (if needed)
@@ -158,4 +173,5 @@ Upgrade is complete when:
 - [ ] All original content preserved
 - [ ] Intake question routes correctly
 - [ ] Tested and working
+
 </success_criteria>

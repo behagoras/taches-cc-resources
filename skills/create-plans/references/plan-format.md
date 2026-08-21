@@ -1,17 +1,22 @@
 <overview>
+
 Claude-executable plans have a specific format that enables Claude to implement without interpretation. This reference defines what makes a plan executable vs. vague.
 
 **Key insight:** PLAN.md IS the executable prompt. It contains everything Claude needs to execute the phase, including objective, context references, tasks, verification, success criteria, and output specification.
+
 </overview>
 
 <core_principle>
+
 A plan is Claude-executable when Claude can read the PLAN.md and immediately start implementing without asking clarifying questions.
 
 If Claude has to guess, interpret, or make assumptions - the task is too vague.
+
 </core_principle>
 
 <prompt_structure>
-Every PLAN.md follows this XML structure:
+
+Every PLAN.md follows this XML structure. Put a blank line after every opening tag and before every closing tag:
 
 ```markdown
 ---
@@ -21,15 +26,19 @@ domain: [optional]
 ---
 
 <objective>
+
 [What and why]
 Purpose: [...]
 Output: [...]
+
 </objective>
 
 <context>
+
 @.planning/BRIEF.md
 @.planning/ROADMAP.md
 @relevant/source/files.ts
+
 </context>
 
 <tasks>
@@ -59,32 +68,43 @@ Output: [...]
 </tasks>
 
 <verification>
+
 [Overall phase checks]
+
 </verification>
 
 <success_criteria>
+
 [Measurable completion]
+
 </success_criteria>
 
 <output>
+
 [SUMMARY.md specification]
+
 </output>
 ```
+
 </prompt_structure>
 
 <task_anatomy>
+
 Every task has four required fields:
 
 <field name="files">
+
 **What it is**: Exact file paths that will be created or modified.
 
 **Good**: `src/app/api/auth/login/route.ts`, `prisma/schema.prisma`
 **Bad**: "the auth files", "relevant components"
 
 Be specific. If you don't know the file path, figure it out first.
+
 </field>
 
 <field name="action">
+
 **What it is**: Specific implementation instructions, including what to avoid and WHY.
 
 **Good**: "Create POST endpoint that accepts {email, password}, validates using bcrypt against User table, returns JWT in httpOnly cookie with 15-min expiry. Use jose library (not jsonwebtoken - CommonJS issues with Next.js Edge runtime)."
@@ -92,9 +112,11 @@ Be specific. If you don't know the file path, figure it out first.
 **Bad**: "Add authentication", "Make login work"
 
 Include: technology choices, data structures, behavior details, pitfalls to avoid.
+
 </field>
 
 <field name="verify">
+
 **What it is**: How to prove the task is complete.
 
 **Good**:
@@ -105,9 +127,11 @@ Include: technology choices, data structures, behavior details, pitfalls to avoi
 **Bad**: "It works", "Looks good", "User can log in"
 
 Must be executable - a command, a test, an observable behavior.
+
 </field>
 
 <field name="done">
+
 **What it is**: Acceptance criteria - the measurable state of completion.
 
 **Good**: "Valid credentials return 200 + JWT cookie, invalid credentials return 401"
@@ -115,13 +139,16 @@ Must be executable - a command, a test, an observable behavior.
 **Bad**: "Authentication is complete"
 
 Should be testable without subjective judgment.
+
 </field>
 </task_anatomy>
 
 <task_types>
+
 Tasks have a `type` attribute that determines how they execute:
 
 <type name="auto">
+
 **Default task type** - Claude executes autonomously.
 
 **Structure:**
@@ -136,9 +163,11 @@ Tasks have a `type` attribute that determines how they execute:
 ```
 
 Use for: Everything Claude can do independently (code, tests, builds, file operations).
+
 </type>
 
 <type name="checkpoint:human-action">
+
 **RARELY USED** - Only for actions with NO CLI/API. Claude automates everything possible first.
 
 **Structure:**
@@ -146,8 +175,10 @@ Use for: Everything Claude can do independently (code, tests, builds, file opera
 <task type="checkpoint:human-action" gate="blocking">
   <action>[Unavoidable manual step - email link, 2FA code]</action>
   <instructions>
+
     [What Claude already automated]
     [The ONE thing requiring human action]
+
   </instructions>
   <verification>[What Claude can check afterward]</verification>
   <resume-signal>[How to continue]</resume-signal>
@@ -161,9 +192,11 @@ Do NOT use for: Anything with a CLI (Vercel, Stripe, Upstash, Railway, GitHub), 
 See: references/cli-automation.md for what Claude can automate.
 
 **Execution:** Claude automates everything with CLI/API, stops only for truly unavoidable manual steps.
+
 </type>
 
 <type name="checkpoint:human-verify">
+
 **Human must verify Claude's work** - Visual checks, UX testing.
 
 **Structure:**
@@ -171,12 +204,14 @@ See: references/cli-automation.md for what Claude can automate.
 <task type="checkpoint:human-verify" gate="blocking">
   <what-built>Responsive dashboard layout</what-built>
   <how-to-verify>
+
     1. Run: npm run dev
     2. Visit: http://localhost:3000/dashboard
     3. Desktop (>1024px): Verify sidebar left, content right
     4. Tablet (768px): Verify sidebar collapses to hamburger
     5. Mobile (375px): Verify single column, bottom nav
     6. Check: No layout shift, no horizontal scroll
+
   </how-to-verify>
   <resume-signal>Type "approved" or describe issues</resume-signal>
 </task>
@@ -185,9 +220,11 @@ See: references/cli-automation.md for what Claude can automate.
 Use for: UI/UX verification, visual design checks, animation smoothness, accessibility testing.
 
 **Execution:** Claude builds the feature, stops, provides testing instructions, waits for approval/feedback.
+
 </type>
 
 <type name="checkpoint:decision">
+
 **Human must make implementation choice** - Direction-setting decisions.
 
 **Structure:**
@@ -219,6 +256,7 @@ Use for: UI/UX verification, visual design checks, animation smoothness, accessi
 Use for: Technology selection, architecture decisions, design choices, feature prioritization.
 
 **Execution:** Claude presents options with balanced pros/cons, waits for decision, proceeds with chosen direction.
+
 </type>
 
 **When to use checkpoints:**
@@ -235,57 +273,72 @@ Use for: Technology selection, architecture decisions, design choices, feature p
 **Golden rule:** If Claude CAN automate it, Claude MUST automate it. See: references/cli-automation.md
 
 See `references/checkpoints.md` for comprehensive checkpoint guidance.
+
 </task_types>
 
 <context_references>
+
 Use @file references to load context for the prompt:
 
 ```markdown
 <context>
+
 @.planning/BRIEF.md           # Project vision
 @.planning/ROADMAP.md         # Phase structure
 @.planning/phases/02-auth/FINDINGS.md  # Research results
 @src/lib/db.ts                # Existing database setup
 @src/types/user.ts            # Existing type definitions
+
 </context>
 ```
 
 Reference files that Claude needs to understand before implementing.
+
 </context_references>
 
 <verification_section>
+
 Overall phase verification (beyond individual task verification):
 
 ```markdown
 <verification>
+
 Before declaring phase complete:
 - [ ] `npm run build` succeeds without errors
 - [ ] `npm test` passes all tests
 - [ ] No TypeScript errors
 - [ ] Feature works end-to-end manually
+
 </verification>
 ```
+
 </verification_section>
 
 <success_criteria_section>
+
 Measurable criteria for phase completion:
 
 ```markdown
 <success_criteria>
+
 - All tasks completed
 - All verification checks pass
 - No errors or warnings introduced
 - JWT auth flow works end-to-end
 - Protected routes redirect unauthenticated users
+
 </success_criteria>
 ```
+
 </success_criteria_section>
 
 <output_section>
+
 Specify the SUMMARY.md structure:
 
 ```markdown
 <output>
+
 After completion, create `.planning/phases/XX-name/SUMMARY.md`:
 
 # Phase X: Name Summary
@@ -297,12 +350,15 @@ After completion, create `.planning/phases/XX-name/SUMMARY.md`:
 ## Decisions Made
 ## Issues Encountered
 ## Next Phase Readiness
+
 </output>
 ```
+
 </output_section>
 
 <specificity_levels>
 <too_vague>
+
 ```xml
 <task type="auto">
   <name>Task 1: Add authentication</name>
@@ -314,9 +370,11 @@ After completion, create `.planning/phases/XX-name/SUMMARY.md`:
 ```
 
 Claude: "How? What type? What library? Where?"
+
 </too_vague>
 
 <just_right>
+
 ```xml
 <task type="auto">
   <name>Task 1: Create login endpoint with JWT</name>
@@ -328,42 +386,52 @@ Claude: "How? What type? What library? Where?"
 ```
 
 Claude can implement this immediately.
+
 </just_right>
 
 <too_detailed>
+
 Writing the actual code in the plan. Trust Claude to implement from clear instructions.
+
 </too_detailed>
 </specificity_levels>
 
 <anti_patterns>
 <vague_actions>
+
 - "Set up the infrastructure"
 - "Handle edge cases"
 - "Make it production-ready"
 - "Add proper error handling"
 
 These require Claude to decide WHAT to do. Specify it.
+
 </vague_actions>
 
 <unverifiable_completion>
+
 - "It works correctly"
 - "User experience is good"
 - "Code is clean"
 - "Tests pass" (which tests? do they exist?)
 
 These require subjective judgment. Make it objective.
+
 </unverifiable_completion>
 
 <missing_context>
+
 - "Use the standard approach"
 - "Follow best practices"
 - "Like the other endpoints"
 
 Claude doesn't know your standards. Be explicit.
+
 </missing_context>
 </anti_patterns>
 
 <sizing_tasks>
+
 Good task size: 15-60 minutes of Claude work.
 
 **Too small**: "Add import statement for bcrypt" (combine with related task)
@@ -374,4 +442,5 @@ If a task takes multiple sessions, break it down.
 If a task is trivial, combine with related tasks.
 
 **Note on scope:** If a phase has >7 tasks or spans multiple subsystems, split into multiple plans using the naming convention `{phase}-{plan}-PLAN.md`. See `references/scope-estimation.md` for guidance.
+
 </sizing_tasks>

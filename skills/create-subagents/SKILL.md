@@ -4,13 +4,16 @@ description: Expert guidance for creating, building, and using Claude Code subag
 ---
 
 <objective>
+
 Subagents are specialized Claude instances that run in isolated contexts with focused roles and limited tool access. This skill teaches you how to create effective subagents, write strong system prompts, configure tool access, and orchestrate multi-agent workflows using the Task tool.
 
 Subagents enable delegation of complex tasks to specialized agents that operate autonomously without user interaction, returning their final output to the main conversation.
+
 </objective>
 
 <quick_start>
 <workflow>
+
 1. Run `/agents` command
 2. Select "Create New Agent"
 3. Choose project-level (`.claude/agents/`) or user-level (`~/.claude/agents/`)
@@ -20,9 +23,11 @@ Subagents enable delegation of complex tasks to specialized agents that operate 
    - **tools**: Optional comma-separated list (inherits all if omitted)
    - **model**: Optional (`sonnet`, `opus`, `haiku`, or `inherit`)
 5. Write the system prompt (the subagent's instructions)
+
 </workflow>
 
 <example>
+
 ```markdown
 ---
 name: code-reviewer
@@ -32,24 +37,32 @@ model: sonnet
 ---
 
 <role>
+
 You are a senior code reviewer focused on quality, security, and best practices.
+
 </role>
 
 <focus_areas>
+
 - Code quality and maintainability
 - Security vulnerabilities
 - Performance issues
 - Best practices adherence
+
 </focus_areas>
 
 <output_format>
+
 Provide specific, actionable feedback with file:line references.
+
 </output_format>
 ```
+
 </example>
 </quick_start>
 
 <file_structure>
+
 | Type | Location | Scope | Priority |
 |------|----------|-------|----------|
 | **Project** | `.claude/agents/` | Current project only | Highest |
@@ -57,35 +70,45 @@ Provide specific, actionable feedback with file:line references.
 | **Plugin** | Plugin's `agents/` dir | All projects | Lowest |
 
 Project-level subagents override user-level when names conflict.
+
 </file_structure>
 
 <configuration>
 <field name="name">
+
 - Lowercase letters and hyphens only
 - Must be unique
+
 </field>
 
 <field name="description">
+
 - Natural language description of purpose
 - Include when Claude should invoke this subagent
 - Used for automatic subagent selection
+
 </field>
 
 <field name="tools">
+
 - Comma-separated list: `Read, Write, Edit, Bash, Grep`
 - If omitted: inherits all tools from main thread
 - Use `/agents` interface to see all available tools
+
 </field>
 
 <field name="model">
+
 - `sonnet`, `opus`, `haiku`, or `inherit`
 - `inherit`: uses same model as main conversation
 - If omitted: defaults to configured subagent model (usually sonnet)
+
 </field>
 </configuration>
 
 <execution_model>
 <critical_constraint>
+
 **Subagents are black boxes that cannot interact with users.**
 
 Subagents run in isolated contexts and return their final output to the main conversation. They:
@@ -96,9 +119,11 @@ Subagents run in isolated contexts and return their final output to the main con
 - ❌ **User never sees subagent's intermediate steps**
 
 The main conversation sees only the subagent's final report/output.
+
 </critical_constraint>
 
 <workflow_design>
+
 **Designing workflows with subagents:**
 
 Use **main chat** for:
@@ -125,15 +150,19 @@ Subagent: Generate code based on confirmed plan
   ↓
 Main Chat: Present results, handle testing/deployment
 ```
+
 </workflow_design>
 </execution_model>
 
 <system_prompt_guidelines>
 <principle name="be_specific">
+
 Clearly define the subagent's role, capabilities, and constraints.
+
 </principle>
 
 <principle name="use_pure_xml_structure">
+
 Structure the system prompt with pure XML tags. Remove ALL markdown headings from the body.
 
 ```markdown
@@ -145,37 +174,48 @@ model: sonnet
 ---
 
 <role>
+
 You are a senior code reviewer specializing in security.
+
 </role>
 
 <focus_areas>
+
 - SQL injection vulnerabilities
 - XSS attack vectors
 - Authentication/authorization issues
 - Sensitive data exposure
+
 </focus_areas>
 
 <workflow>
+
 1. Read the modified files
 2. Identify security risks
 3. Provide specific remediation steps
 4. Rate severity (Critical/High/Medium/Low)
+
 </workflow>
 ```
+
 </principle>
 
 <principle name="task_specific">
+
 Tailor instructions to the specific task domain. Don't create generic "helper" subagents.
 
 ❌ Bad: "You are a helpful assistant that helps with code"
 ✅ Good: "You are a React component refactoring specialist. Analyze components for hooks best practices, performance anti-patterns, and accessibility issues."
+
 </principle>
 </system_prompt_guidelines>
 
 <subagent_xml_structure>
+
 Subagent.md files are system prompts consumed only by Claude. Like skills and slash commands, they should use pure XML structure for optimal parsing and token efficiency.
 
 <recommended_tags>
+
 Common tags for subagent structure:
 
 - `<role>` - Who the subagent is and what it does
@@ -185,9 +225,11 @@ Common tags for subagent structure:
 - `<output_format>` - How to structure deliverables
 - `<success_criteria>` - Completion criteria
 - `<validation>` - How to verify work
+
 </recommended_tags>
 
 <intelligence_rules>
+
 **Simple subagents** (single focused task):
 - Use role + constraints + workflow minimum
 - Example: code-reviewer, test-runner
@@ -199,23 +241,29 @@ Common tags for subagent structure:
 **Complex subagents** (research + generation + validation):
 - Add all tags as appropriate including validation, examples
 - Example: mcp-api-researcher, comprehensive-auditor
+
 </intelligence_rules>
 
 <critical_rule>
+
 **Remove ALL markdown headings (##, ###) from subagent body.** Use semantic XML tags instead.
 
 Keep markdown formatting WITHIN content (bold, italic, lists, code blocks, links).
 
 For XML structure principles and token efficiency details, see @skills/create-agent-skills/references/use-xml-tags.md - the same principles apply to subagents.
+
 </critical_rule>
 </subagent_xml_structure>
 
 <invocation>
 <automatic>
+
 Claude automatically selects subagents based on the `description` field when it matches the current task.
+
 </automatic>
 
 <explicit>
+
 You can explicitly invoke a subagent:
 
 ```
@@ -225,26 +273,32 @@ You can explicitly invoke a subagent:
 ```
 > Have the test-writer subagent create tests for the new API endpoints
 ```
+
 </explicit>
 </invocation>
 
 <management>
 <using_agents_command>
+
 Run `/agents` for an interactive interface to:
 - View all available subagents
 - Create new subagents
 - Edit existing subagents
 - Delete custom subagents
+
 </using_agents_command>
 
 <manual_editing>
+
 You can also edit subagent files directly:
 - Project: `.claude/agents/subagent-name.md`
 - User: `~/.claude/agents/subagent-name.md`
+
 </manual_editing>
 </management>
 
 <reference>
+
 **Core references**:
 
 **Subagent usage and configuration**: [references/subagents.md](references/subagents.md)
@@ -292,9 +346,11 @@ You can also edit subagent files directly:
 - Common failure types (hallucinations, format errors, tool misuse)
 - Diagnostic procedures
 - Continuous monitoring
+
 </reference>
 
 <success_criteria>
+
 A well-configured subagent has:
 
 - Valid YAML frontmatter (name matches file, description includes triggers)
@@ -304,4 +360,5 @@ A well-configured subagent has:
 - Description field optimized for automatic routing
 - Successfully tested on representative tasks
 - Model selection appropriate for task complexity (Sonnet for reasoning, Haiku for simple tasks)
+
 </success_criteria>

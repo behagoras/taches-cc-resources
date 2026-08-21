@@ -144,10 +144,12 @@ When planning Phase 5, the PLAN.md automatically gets context:
 
 ```markdown
 <context>
+
 @.planning/BRIEF.md                      # Knows: v1.0 shipped, codebase exists
 @.planning/MILESTONES.md                 # Knows: what v1.0 delivered
 @AppName/NetworkManager.swift            # Existing code to improve
 @AppName/APIClient.swift                 # Existing code to fix
+
 </context>
 
 <tasks>
@@ -208,11 +210,13 @@ When planning Phase 5, the PLAN.md automatically gets context:
 <details>
 <summary>✅ v1.0 MVP (Phases 1-4)</summary>
 [Collapsed]
+
 </details>
 
 <details>
 <summary>✅ v1.1 Hardening (Phases 5-6)</summary>
 [Collapsed]
+
 </details>
 
 ### 🚧 v2.0 SwiftUI Redesign (In Progress)
@@ -364,12 +368,16 @@ Starting new work?
 ### Greenfield Plan (v1.0):
 ```markdown
 <objective>
+
 Create authentication system from scratch.
+
 </objective>
 
 <context>
+
 @.planning/BRIEF.md
 @.planning/ROADMAP.md
+
 </context>
 
 <tasks>
@@ -385,14 +393,18 @@ Create authentication system from scratch.
 ### Brownfield Plan (v1.1):
 ```markdown
 <objective>
+
 Add MFA to existing authentication system.
+
 </objective>
 
 <context>
+
 @.planning/BRIEF.md              # Shows v1.0 shipped, auth exists
 @.planning/MILESTONES.md         # Shows what v1.0 delivered
 @src/models/User.ts              # Existing User model
 @src/auth/AuthService.ts         # Existing auth logic
+
 </context>
 
 <tasks>
@@ -407,6 +419,7 @@ Add MFA to existing authentication system.
 <task type="checkpoint:human-verify" gate="blocking">
   <what-built>MFA enrollment flow</what-built>
   <how-to-verify>
+
     1. Run: npm run dev
     2. Login as existing user (test@example.com)
     3. Navigate to Settings → Security
@@ -415,6 +428,7 @@ Add MFA to existing authentication system.
     6. Enter code - should enable successfully
     7. Logout, login again - should prompt for MFA code
     8. Verify: existing users without MFA can still login (backward compat)
+
   </how-to-verify>
   <resume-signal>Type "approved" or describe issues</resume-signal>
 </task>

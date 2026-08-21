@@ -1,8 +1,11 @@
 <overview>
+
 Claude has a finite context window. This reference defines how to monitor usage and handle approaching limits gracefully.
+
 </overview>
 
 <context_awareness>
+
 Claude receives system warnings showing token usage:
 
 ```
@@ -10,21 +13,27 @@ Token usage: 150000/200000; 50000 remaining
 ```
 
 This information appears in `<system_warning>` tags during the conversation.
+
 </context_awareness>
 
 <thresholds>
 <threshold level="comfortable" remaining="50%+">
+
 **Status**: Plenty of room
 **Action**: Work normally
+
 </threshold>
 
 <threshold level="getting_full" remaining="25%">
+
 **Status**: Context accumulating
 **Action**: Mention to user: "Context getting full. Consider wrapping up or creating handoff soon."
 **No immediate action required.**
+
 </threshold>
 
 <threshold level="low" remaining="15%">
+
 **Status**: Running low
 **Action**:
 1. Pause at next safe point (complete current atomic operation)
@@ -34,9 +43,11 @@ This information appears in `<system_warning>` tags during the conversation.
 3. Await user decision
 
 **Do not start new large operations.**
+
 </threshold>
 
 <threshold level="critical" remaining="10%">
+
 **Status**: Must stop
 **Action**:
 1. Complete current atomic task (don't leave broken state)
@@ -45,10 +56,12 @@ This information appears in `<system_warning>` tags during the conversation.
 4. **Stop working** - do not start any new tasks
 
 This is non-negotiable. Running out of context mid-task is worse than stopping early.
+
 </threshold>
 </thresholds>
 
 <what_counts_as_atomic>
+
 An atomic operation is one that shouldn't be interrupted:
 
 **Atomic (finish before stopping)**:
@@ -62,9 +75,11 @@ An atomic operation is one that shouldn't be interrupted:
 - Research + implementation (can pause between)
 
 When hitting 10% threshold, finish current atomic operation, then stop.
+
 </what_counts_as_atomic>
 
 <handoff_content_at_limit>
+
 When auto-creating handoff at 10%, include:
 
 ```yaml
@@ -84,9 +99,11 @@ Body must capture:
 4. Any decisions/context from this session
 
 Be thorough - the next session starts fresh.
+
 </handoff_content_at_limit>
 
 <preventing_context_bloat>
+
 Strategies to extend context life:
 
 **Don't re-read files unnecessarily**
@@ -109,9 +126,11 @@ Strategies to extend context life:
 - Concise responses
 - Don't repeat user's question back
 - Don't over-explain obvious things
+
 </preventing_context_bloat>
 
 <user_signals>
+
 Watch for user signals that suggest context concern:
 
 - "Let's wrap up"
@@ -122,9 +141,11 @@ Watch for user signals that suggest context concern:
 - "Running low on context?"
 
 Any of these → trigger handoff workflow immediately.
+
 </user_signals>
 
 <fresh_session_guidance>
+
 When user returns in fresh session:
 
 1. They invoke skill
@@ -135,4 +156,5 @@ When user returns in fresh session:
 6. Continue from saved state
 
 The fresh session has full context available again.
+
 </fresh_session_guidance>

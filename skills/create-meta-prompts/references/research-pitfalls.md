@@ -12,12 +12,14 @@ This document catalogs research mistakes discovered in production use, providing
 **Prevention**:
 ```xml
 <verification_checklist>
+
 **CRITICAL**: Verify ALL configuration scopes:
 □ User/global scope - System-wide configuration
 □ Project scope - Project-level configuration files
 □ Local scope - Project-specific user overrides
 □ Workspace scope - IDE/tool workspace settings
 □ Environment scope - Environment variables
+
 </verification_checklist>
 ```
 
@@ -28,6 +30,7 @@ This document catalogs research mistakes discovered in production use, providing
 **Prevention**:
 ```xml
 <sources>
+
 Official sources (use WebFetch):
 - https://exact-url-to-official-docs
 - https://exact-url-to-api-reference
@@ -35,6 +38,7 @@ Official sources (use WebFetch):
 Search queries (use WebSearch):
 - "specific search query {current_year}"
 - "another specific query {current_year}"
+
 </sources>
 ```
 
@@ -45,10 +49,12 @@ Search queries (use WebSearch):
 **Prevention**:
 ```xml
 <verification_checklist>
+
 □ Check current official documentation
 □ Review changelog/release notes for recent updates
 □ Verify version numbers and publication dates
 □ Cross-reference multiple authoritative sources
+
 </verification_checklist>
 ```
 
@@ -59,11 +65,13 @@ Search queries (use WebSearch):
 **Prevention**:
 ```xml
 <verification_checklist>
+
 □ Claude Desktop capabilities
 □ Claude Code capabilities
 □ VS Code extension capabilities
 □ API/SDK capabilities
 Document which environment supports which features
+
 </verification_checklist>
 ```
 
@@ -74,11 +82,13 @@ Document which environment supports which features
 **Prevention**:
 ```xml
 <critical_claims_audit>
+
 For any "X is not possible" or "Y is the only way" statement:
 - [ ] Is this verified by official documentation stating it explicitly?
 - [ ] Have I checked for recent updates that might change this?
 - [ ] Have I verified all possible approaches/mechanisms?
 - [ ] Am I confusing "I didn't find it" with "it doesn't exist"?
+
 </critical_claims_audit>
 ```
 
@@ -89,6 +99,7 @@ For any "X is not possible" or "Y is the only way" statement:
 **Prevention**:
 ```xml
 <verification_checklist>
+
 Enumerate ALL known options FIRST:
 □ Option 1: [specific item]
 □ Option 2: [specific item]
@@ -99,6 +110,7 @@ For each option above, document:
 - Existence (confirmed/not found/unclear)
 - Official source URL
 - Current status (active/deprecated/beta)
+
 </verification_checklist>
 ```
 
@@ -109,11 +121,13 @@ For each option above, document:
 **Prevention**:
 ```xml
 <source_verification>
+
 For critical claims, require multiple sources:
 - [ ] Official documentation (primary)
 - [ ] Release notes/changelog (for currency)
 - [ ] Additional authoritative source (for verification)
 - [ ] Contradiction check (ensure sources agree)
+
 </source_verification>
 ```
 
@@ -124,11 +138,13 @@ For critical claims, require multiple sources:
 **Prevention**:
 ```xml
 <source_verification>
+
 For each source consulted:
 - [ ] Publication/update date verified (prefer recent/current)
 - [ ] Source authority confirmed (official docs, not blogs)
 - [ ] Version relevance checked (matches current version)
 - [ ] Multiple search queries tried (not just one)
+
 </source_verification>
 ```
 

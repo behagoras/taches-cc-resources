@@ -6,12 +6,15 @@ description: Create hierarchical project plans optimized for solo agentic develo
 <essential_principles>
 
 <principle name="solo_developer_plus_claude">
+
 You are planning for ONE person (the user) and ONE implementer (Claude).
 No teams. No stakeholders. No ceremonies. No coordination overhead.
 The user is the visionary/product owner. Claude is the builder.
+
 </principle>
 
 <principle name="plans_are_prompts">
+
 PLAN.md is not a document that gets transformed into a prompt.
 PLAN.md IS the prompt. It contains:
 - Objective (what and why)
@@ -22,9 +25,11 @@ PLAN.md IS the prompt. It contains:
 - Output (SUMMARY.md specification)
 
 When planning a phase, you are writing the prompt that will execute it.
+
 </principle>
 
 <principle name="scope_control">
+
 Plans must complete within ~50% of context usage to maintain consistent quality.
 
 **The quality degradation curve:**
@@ -50,9 +55,11 @@ Each plan is independently executable, verifiable, and scoped to **2-3 tasks max
 **Autonomous execution:** Plans without checkpoints execute via subagent with fresh context - impossible to degrade.
 
 See: references/scope-estimation.md
+
 </principle>
 
 <principle name="human_checkpoints">
+
 **Claude automates everything that has a CLI or API.** Checkpoints are for verification and decisions, not manual work.
 
 **Checkpoint types:**
@@ -71,9 +78,11 @@ See: references/scope-estimation.md
 **Protocol:** Claude automates work → reaches checkpoint:human-verify → presents what was done → waits for confirmation → resumes
 
 See: references/checkpoints.md, references/cli-automation.md
+
 </principle>
 
 <principle name="deviation_rules">
+
 Plans are guides, not straitjackets. Real development always involves discoveries.
 
 **During execution, deviations are handled automatically via 5 embedded rules:**
@@ -91,17 +100,21 @@ Plans are guides, not straitjackets. Real development always involves discoverie
 **Result:** Flow never breaks. Bugs get fixed. Scope stays controlled. Complete transparency.
 
 See: workflows/execute-phase.md (deviation_rules section)
+
 </principle>
 
 <principle name="ship_fast_iterate_fast">
+
 No enterprise process. No approval gates. No multi-week timelines.
 Plan → Execute → Ship → Learn → Repeat.
 
 **Milestone-driven:** Ship v1.0 → mark milestone → plan v1.1 → ship → repeat.
 Milestones mark shipped versions and enable continuous iteration.
+
 </principle>
 
 <principle name="milestone_boundaries">
+
 Milestones mark shipped versions (v1.0, v1.1, v2.0).
 
 **Purpose:**
@@ -118,9 +131,11 @@ Milestones mark shipped versions (v1.0, v1.1, v2.0).
 **Archive ONLY for:** Separate codebases or complete rewrites (rare).
 
 See: references/milestone-management.md
+
 </principle>
 
 <principle name="anti_enterprise_patterns">
+
 NEVER include in plans:
 - Team structures, roles, RACI matrices
 - Stakeholder management, alignment meetings
@@ -130,9 +145,11 @@ NEVER include in plans:
 - Documentation for documentation's sake
 
 If it sounds like corporate PM theater, delete it.
+
 </principle>
 
 <principle name="context_awareness">
+
 Monitor token usage via system warnings.
 
 **At 25% remaining**: Mention context getting full
@@ -140,9 +157,11 @@ Monitor token usage via system warnings.
 **At 10% remaining**: Auto-create handoff, stop
 
 Never start large operations below 15% without user confirmation.
+
 </principle>
 
 <principle name="user_gates">
+
 Never charge ahead at critical decision points. Use gates:
 - **AskUserQuestion**: Structured choices (2-4 options)
 - **Inline questions**: Simple confirmations
@@ -156,9 +175,11 @@ Mandatory gates:
 - Before starting next phase with previous issues
 
 See: references/user-gates.md
+
 </principle>
 
 <principle name="git_versioning">
+
 All planning artifacts are version controlled. Commit outcomes, not process.
 
 - Check for repo on invocation, offer to initialize
@@ -167,11 +188,13 @@ All planning artifacts are version controlled. Commit outcomes, not process.
 - Git log becomes project history
 
 See: references/git-integration.md
+
 </principle>
 
 </essential_principles>
 
 <context_scan>
+
 **Run on every invocation** to understand current state:
 
 ```bash
@@ -195,14 +218,17 @@ Inline question: "No git repo found. Initialize one? (Recommended for version co
 If yes: `git init`
 
 **Present findings before intake question.**
+
 </context_scan>
 
 <domain_expertise>
+
 **Domain expertise lives in `~/.claude/skills/expertise/`**
 
 Before creating roadmap or phase plans, determine if domain expertise should be loaded.
 
 <scan_domains>
+
 ```bash
 ls ~/.claude/skills/expertise/ 2>/dev/null
 ```
@@ -210,9 +236,11 @@ ls ~/.claude/skills/expertise/ 2>/dev/null
 This reveals available domain expertise (e.g., macos-apps, iphone-apps, unity-games, nextjs-ecommerce).
 
 **If no domain skills found:** Proceed without domain expertise (graceful degradation). The skill works fine without domain-specific context.
+
 </scan_domains>
 
 <inference_rules>
+
 If user's request contains domain keywords, INFER the domain:
 
 | Keywords | Domain Skill |
@@ -230,9 +258,11 @@ If domain inferred, confirm:
 Detected: [domain] project → expertise/[skill-name]
 Load this expertise for planning? (Y / see other options / none)
 ```
+
 </inference_rules>
 
 <no_inference>
+
 If no domain obvious from request, present options:
 
 ```
@@ -252,9 +282,11 @@ C. Create domain skill first
 
 Select:
 ```
+
 </no_inference>
 
 <load_domain>
+
 When domain selected, use intelligent loading:
 
 **Step 1: Read domain SKILL.md**
@@ -271,10 +303,12 @@ Domain SKILL.md should contain a `<references_index>` section that maps planning
 Example:
 ```markdown
 <references_index>
+
 **For database/persistence phases:** references/core-data.md, references/swift-concurrency.md
 **For UI/layout phases:** references/swiftui-layout.md, references/appleHIG.md
 **For system integration:** references/appkit-integration.md
 **Always useful:** references/swift-conventions.md
+
 </references_index>
 ```
 
@@ -298,9 +332,11 @@ Announce: "Loaded [domain] expertise ([X] references for [phase-type])."
 **If domain skill not found:** Inform user and offer to proceed without domain expertise.
 
 **If SKILL.md doesn't have references_index:** Fall back to loading all references with warning about context usage.
+
 </load_domain>
 
 <when_to_load>
+
 Domain expertise should be loaded BEFORE:
 - Creating roadmap (phases should be domain-appropriate)
 - Planning phases (tasks must be domain-specific)
@@ -309,10 +345,12 @@ Domain expertise is NOT needed for:
 - Creating brief (vision is domain-agnostic)
 - Resuming from handoff (context already established)
 - Transition between phases (just updating status)
+
 </when_to_load>
 </domain_expertise>
 
 <intake>
+
 Based on scan results, present context-aware options:
 
 **If handoff found:**
@@ -352,9 +390,11 @@ What would you like to do?
 ```
 
 **Wait for response before proceeding.**
+
 </intake>
 
 <routing>
+
 | Response | Workflow |
 |----------|----------|
 | "brief", "new project", "start", 1 (no structure) | `workflows/create-brief.md` |
@@ -372,9 +412,11 @@ What would you like to do?
 **Critical:** Plan execution should NOT invoke this skill. Use `/run-plan` for context efficiency (skill loads ~20k tokens, /run-plan loads ~5-7k).
 
 **After reading the workflow, follow it exactly.**
+
 </routing>
 
 <hierarchy>
+
 The planning hierarchy (each level builds on previous):
 
 ```
@@ -397,9 +439,11 @@ SUMMARY.md        → Outcome (existence = phase complete)
 - PLAN.md IS the execution prompt
 - SUMMARY.md existence marks phase complete
 - Each level can look UP for context
+
 </hierarchy>
 
 <output_structure>
+
 All planning artifacts go in `.planning/`:
 
 ```
@@ -427,9 +471,11 @@ All planning artifacts go in `.planning/`:
 - Phase folders: `{phase}-{name}/` (e.g., 01-foundation/)
 
 Files sort chronologically. Related artifacts (plan + summary) are adjacent.
+
 </output_structure>
 
 <reference_index>
+
 All in `references/`:
 
 **Structure:** directory-structure.md, hierarchy-rules.md
@@ -438,9 +484,11 @@ All in `references/`:
 **Planning:** scope-estimation.md, checkpoints.md, milestone-management.md
 **Process:** user-gates.md, git-integration.md, research-pitfalls.md
 **Domain:** domain-expertise.md (guide for creating context-efficient domain skills)
+
 </reference_index>
 
 <templates_index>
+
 All in `templates/`:
 
 | Template | Purpose |
@@ -453,9 +501,11 @@ All in `templates/`:
 | milestone.md | Milestone entry for MILESTONES.md |
 | issues.md | Deferred enhancements log (ISSUES.md) |
 | continue-here.md | Context handoff format |
+
 </templates_index>
 
 <workflows_index>
+
 All in `workflows/`:
 
 | Workflow | Purpose |
@@ -471,9 +521,11 @@ All in `workflows/`:
 | handoff.md | Create context handoff for pausing |
 | resume.md | Load handoff, restore context |
 | get-guidance.md | Help decide planning approach |
+
 </workflows_index>
 
 <success_criteria>
+
 Planning skill succeeds when:
 - Context scan runs before intake
 - Appropriate workflow selected based on state
@@ -485,4 +537,5 @@ Planning skill succeeds when:
 - All work (planned and discovered) fully documented
 - Domain expertise loaded intelligently (SKILL.md + selective references, not all files)
 - Plan execution uses /run-plan command (not skill invocation)
+
 </success_criteria>

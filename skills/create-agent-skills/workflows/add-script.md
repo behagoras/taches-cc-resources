@@ -1,11 +1,14 @@
 # Workflow: Add a Script to a Skill
 
 <required_reading>
+
 **Read these reference files NOW:**
 1. references/using-scripts.md
+
 </required_reading>
 
 <process>
+
 ## Step 1: Identify the Skill
 
 Ask (if not already provided):
@@ -66,10 +69,12 @@ chmod +x ~/.claude/skills/{skill-name}/scripts/{script-name}.sh
 Find the workflow that needs this operation. Add:
 ```xml
 <process>
+
 ...
 N. Run `scripts/{script-name}.sh [arguments]`
 N+1. Verify operation succeeded
 ...
+
 </process>
 ```
 
@@ -80,9 +85,11 @@ Invoke the skill workflow and verify:
 - Inputs are passed correctly
 - Errors are handled gracefully
 - Output matches expectations
+
 </process>
 
 <success_criteria>
+
 Script is complete when:
 - [ ] scripts/ directory exists
 - [ ] Script file has proper structure (comments, validation, error handling)
@@ -90,4 +97,5 @@ Script is complete when:
 - [ ] At least one workflow references the script
 - [ ] No hardcoded secrets or credentials
 - [ ] Tested with real invocation
+
 </success_criteria>

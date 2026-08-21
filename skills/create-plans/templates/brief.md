@@ -38,10 +38,12 @@ What we're NOT building (prevents scope creep):
 ```
 
 <guidelines>
+
 - Keep under 50 lines
 - Success criteria must be measurable/verifiable
 - Out of scope prevents "while we're at it" creep
 - This is the ONLY human-focused document
+
 </guidelines>
 
 ## Brownfield Brief (v1.1+)
@@ -122,6 +124,7 @@ How we know it worked:
 ```
 
 <brownfield_guidelines>
+
 **When to update BRIEF:**
 - After completing each milestone (v1.0 → v1.1 → v2.0)
 - When starting new phases after a shipped version
@@ -153,5 +156,6 @@ This structure makes all new plans brownfield-aware automatically because they r
 - "2,450 lines of existing Swift code"
 - "Users reporting X, requesting Y"
 - Plans naturally reference existing files in @context
+
 </brownfield_guidelines>
 
