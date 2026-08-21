@@ -262,9 +262,11 @@ This reference documents what Claude CAN and SHOULD automate during plan executi
 <task type="checkpoint:human-action" gate="blocking">
   <action>Authenticate Vercel CLI so I can continue deployment</action>
   <instructions>
+
     I tried to deploy but got authentication error.
     Run: vercel login
     This will open your browser - complete the authentication flow.
+
   </instructions>
   <verification>vercel whoami returns your account email</verification>
   <resume-signal>Type "done" when authenticated</resume-signal>
@@ -292,10 +294,12 @@ This reference documents what Claude CAN and SHOULD automate during plan executi
 <task type="checkpoint:human-action" gate="blocking">
   <action>Provide Stripe API key so I can continue webhook configuration</action>
   <instructions>
+
     I need your Stripe API key to create webhooks.
     1. Visit dashboard.stripe.com/apikeys
     2. Copy your "Secret key" (starts with sk_test_ or sk_live_)
     3. Paste it here or run: export STRIPE_SECRET_KEY=sk_...
+
   </instructions>
   <verification>Stripe API key works: curl test succeeds</verification>
   <resume-signal>Type "done" or paste the key</resume-signal>
@@ -306,9 +310,11 @@ This reference documents what Claude CAN and SHOULD automate during plan executi
 <task type="auto">
   <name>Save Stripe key and create webhook</name>
   <action>
+
     1. Write STRIPE_SECRET_KEY to .env
     2. Create webhook endpoint via Stripe API
     3. Save webhook secret to .env
+
   </action>
   <verify>.env contains both keys, webhook endpoint exists</verify>
 </task>
@@ -327,9 +333,11 @@ This reference documents what Claude CAN and SHOULD automate during plan executi
 <task type="checkpoint:human-action" gate="blocking">
   <action>Authenticate GitHub CLI so I can create repository</action>
   <instructions>
+
     I need GitHub authentication to create the repo.
     Run: gh auth login
     Follow the prompts to authenticate (browser or token).
+
   </instructions>
   <verification>gh auth status shows "Logged in"</verification>
   <resume-signal>Type "done" when authenticated</resume-signal>
@@ -355,11 +363,13 @@ This reference documents what Claude CAN and SHOULD automate during plan executi
 <task type="checkpoint:human-action" gate="blocking">
   <action>Configure Upstash CLI credentials so I can create database</action>
   <instructions>
+
     I need Upstash authentication to create Redis database.
     1. Visit console.upstash.com/account/api
     2. Copy your API key
     3. Run: upstash auth login
     4. Paste your API key when prompted
+
   </instructions>
   <verification>upstash auth status shows authenticated</verification>
   <resume-signal>Type "done" when authenticated</resume-signal>
@@ -368,9 +378,11 @@ This reference documents what Claude CAN and SHOULD automate during plan executi
 <task type="auto">
   <name>Create Redis database (authenticated)</name>
   <action>
+
     1. Run `upstash redis create myapp-cache --region us-east-1`
     2. Capture connection URL
     3. Write to .env: UPSTASH_REDIS_URL={url}
+
   </action>
   <verify>upstash redis list shows database, .env contains URL</verify>
 </task>
@@ -414,8 +426,10 @@ This reference documents what Claude CAN and SHOULD automate during plan executi
 <task type="checkpoint:human-action" gate="blocking">
   <action>Complete email verification for SendGrid account</action>
   <instructions>
+
     I created the account and requested verification email.
     Check your inbox for verification link and click it.
+
   </instructions>
   <verification>SendGrid API key works: curl test succeeds</verification>
   <resume-signal>Type "done" when verified</resume-signal>

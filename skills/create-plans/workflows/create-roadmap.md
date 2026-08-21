@@ -1,19 +1,24 @@
 # Workflow: Create Roadmap
 
 <required_reading>
+
 **Read these files NOW:**
 1. templates/roadmap.md
 2. Read `.planning/BRIEF.md` if it exists
+
 </required_reading>
 
 <purpose>
+
 Define the phases of implementation. Each phase is a coherent chunk of work
 that delivers value. The roadmap provides structure, not detailed tasks.
+
 </purpose>
 
 <process>
 
 <step name="check_brief">
+
 ```bash
 cat .planning/BRIEF.md 2>/dev/null || echo "No brief found"
 ```
@@ -24,9 +29,11 @@ Ask: "No brief found. Want to create one first, or proceed with roadmap?"
 If proceeding without brief, gather quick context:
 - What are we building?
 - What's the rough scope?
+
 </step>
 
 <step name="identify_phases">
+
 Based on the brief/context, identify 3-6 phases.
 
 Good phases are:
@@ -38,9 +45,11 @@ Common phase patterns:
 - Foundation → Core Feature → Enhancement → Polish
 - Setup → MVP → Iteration → Launch
 - Infrastructure → Backend → Frontend → Integration
+
 </step>
 
 <step name="confirm_phases">
+
 Present the phase breakdown inline:
 
 "Here's how I'd break this down:
@@ -53,9 +62,11 @@ Present the phase breakdown inline:
 Does this feel right? (yes / adjust)"
 
 If "adjust": Ask what to change, revise, present again.
+
 </step>
 
 <step name="decision_gate">
+
 After phases confirmed:
 
 Use AskUserQuestion:
@@ -67,15 +78,19 @@ Use AskUserQuestion:
   - "Let me add context" - I want to provide more information
 
 Loop until "Create roadmap" selected.
+
 </step>
 
 <step name="create_structure">
+
 ```bash
 mkdir -p .planning/phases
 ```
+
 </step>
 
 <step name="write_roadmap">
+
 Use template from `templates/roadmap.md`.
 
 Write to `.planning/ROADMAP.md` with:
@@ -89,9 +104,11 @@ mkdir -p .planning/phases/01-{phase-name}
 mkdir -p .planning/phases/02-{phase-name}
 # etc.
 ```
+
 </step>
 
 <step name="git_commit_initialization">
+
 Commit project initialization (brief + roadmap together):
 
 ```bash
@@ -110,9 +127,11 @@ EOF
 ```
 
 Confirm: "Committed: docs: initialize [project] ([N] phases)"
+
 </step>
 
 <step name="offer_next">
+
 ```
 Project initialized:
 - Brief: .planning/BRIEF.md
@@ -124,11 +143,13 @@ What's next?
 2. Review/adjust phases
 3. Done for now
 ```
+
 </step>
 
 </process>
 
 <phase_naming>
+
 Use `XX-kebab-case-name` format:
 - `01-foundation`
 - `02-authentication`
@@ -136,9 +157,11 @@ Use `XX-kebab-case-name` format:
 - `04-polish`
 
 Numbers ensure ordering. Names describe content.
+
 </phase_naming>
 
 <anti_patterns>
+
 - Don't add time estimates
 - Don't create Gantt charts
 - Don't add resource allocation
@@ -146,13 +169,16 @@ Numbers ensure ordering. Names describe content.
 - Don't plan more than 6 phases (scope creep)
 
 Phases are buckets of work, not project management artifacts.
+
 </anti_patterns>
 
 <success_criteria>
+
 Roadmap is complete when:
 - [ ] `.planning/ROADMAP.md` exists
 - [ ] 3-6 phases defined with clear names
 - [ ] Phase directories created
 - [ ] Dependencies noted if any
 - [ ] Status tracking in place
+
 </success_criteria>

@@ -12,26 +12,32 @@ domain: [optional - if domain skill loaded]
 ---
 
 <objective>
+
 [What this phase accomplishes - from roadmap phase goal]
 
 Purpose: [Why this matters for the project]
 Output: [What artifacts will be created]
+
 </objective>
 
 <execution_context>
+
 @~/.claude/skills/create-plans/workflows/execute-phase.md
 @~/.claude/skills/create-plans/templates/summary.md
 [If plan contains checkpoint tasks (type="checkpoint:*"), add:]
 @~/.claude/skills/create-plans/references/checkpoints.md
+
 </execution_context>
 
 <context>
+
 @.planning/BRIEF.md
 @.planning/ROADMAP.md
 [If research exists:]
 @.planning/phases/XX-name/FINDINGS.md
 [Relevant source files:]
 @src/path/to/relevant.ts
+
 </context>
 
 <tasks>
@@ -81,10 +87,12 @@ Output: [What artifacts will be created]
 <task type="checkpoint:human-verify" gate="blocking">
   <what-built>[What Claude just built that needs verification]</what-built>
   <how-to-verify>
+
     1. Run: [command to start dev server/app]
     2. Visit: [URL to check]
     3. Test: [Specific interactions]
     4. Confirm: [Expected behaviors]
+
   </how-to-verify>
   <resume-signal>Type "approved" to continue, or describe issues to fix</resume-signal>
 </task>
@@ -94,20 +102,25 @@ Output: [What artifacts will be created]
 </tasks>
 
 <verification>
+
 Before declaring phase complete:
 - [ ] [Specific test command]
 - [ ] [Build/type check passes]
 - [ ] [Behavior verification]
+
 </verification>
 
 <success_criteria>
+
 - All tasks completed
 - All verification checks pass
 - No errors or warnings introduced
 - [Phase-specific criteria]
+
 </success_criteria>
 
 <output>
+
 After completion, create `.planning/phases/XX-name/{phase}-{plan}-SUMMARY.md`:
 
 # Phase [X] Plan [Y]: [Name] Summary
@@ -131,10 +144,12 @@ After completion, create `.planning/phases/XX-name/{phase}-{plan}-SUMMARY.md`:
 ## Next Step
 [If more plans in this phase: "Ready for {phase}-{next-plan}-PLAN.md"]
 [If phase complete: "Phase complete, ready for next phase"]
+
 </output>
 ```
 
 <key_elements>
+
 From create-meta-prompts patterns:
 - XML structure for Claude parsing
 - @context references for file loading
@@ -149,9 +164,11 @@ From create-meta-prompts patterns:
 - If planning >7 tasks, split into multiple plans (01-01, 01-02, etc.)
 - Target ~80% context usage maximum
 - See references/scope-estimation.md for splitting guidance
+
 </key_elements>
 
 <good_examples>
+
 ```markdown
 ---
 phase: 01-foundation
@@ -160,21 +177,27 @@ domain: next-js
 ---
 
 <objective>
+
 Set up Next.js project with authentication foundation.
 
 Purpose: Establish the core structure and auth patterns all features depend on.
 Output: Working Next.js app with JWT auth, protected routes, and user model.
+
 </objective>
 
 <execution_context>
+
 @~/.claude/skills/create-plans/workflows/execute-phase.md
 @~/.claude/skills/create-plans/templates/summary.md
+
 </execution_context>
 
 <context>
+
 @.planning/BRIEF.md
 @.planning/ROADMAP.md
 @src/lib/db.ts
+
 </context>
 
 <tasks>
@@ -198,27 +221,35 @@ Output: Working Next.js app with JWT auth, protected routes, and user model.
 </tasks>
 
 <verification>
+
 Before declaring phase complete:
 - [ ] `npm run build` succeeds without errors
 - [ ] `npx prisma validate` passes
 - [ ] Login endpoint responds correctly to valid/invalid credentials
 - [ ] Protected route redirects unauthenticated users
+
 </verification>
 
 <success_criteria>
+
 - All tasks completed
 - All verification checks pass
 - No TypeScript errors
 - JWT auth flow works end-to-end
+
 </success_criteria>
 
 <output>
+
 After completion, create `.planning/phases/01-foundation/01-01-SUMMARY.md`
+
 </output>
 ```
+
 </good_examples>
 
 <bad_examples>
+
 ```markdown
 # Phase 1: Foundation
 
@@ -230,4 +261,5 @@ After completion, create `.planning/phases/01-foundation/01-01-SUMMARY.md`
 ```
 
 This is useless. No XML structure, no @context, no verification, no specificity.
+
 </bad_examples>

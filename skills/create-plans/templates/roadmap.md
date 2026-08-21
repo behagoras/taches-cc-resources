@@ -66,6 +66,7 @@ Plans:
 ```
 
 <guidelines>
+
 **Initial planning (v1.0):**
 - 3-6 phases total (more = scope creep)
 - Each phase delivers something coherent
@@ -80,13 +81,16 @@ Plans:
 - Collapse completed milestones in `<details>` tags
 - Add new milestone sections for upcoming work
 - Keep continuous phase numbering (never restart at 01)
+
 </guidelines>
 
 <status_values>
+
 - `Not started` - Haven't begun
 - `In progress` - Currently working
 - `Complete` - Done (add completion date)
 - `Deferred` - Pushed to later (with reason)
+
 </status_values>
 
 ## Milestone-Grouped Roadmap (After v1.0 Ships)

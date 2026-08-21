@@ -1,12 +1,15 @@
 # Workflow: Execute Phase
 
 <purpose>
+
 Execute a phase prompt (PLAN.md) and create the outcome summary (SUMMARY.md).
+
 </purpose>
 
 <process>
 
 <step name="identify_plan">
+
 Find the next plan to execute:
 - Check ROADMAP.md for "In progress" phase
 - Find plans in that phase directory
@@ -34,9 +37,11 @@ Found plan to execute: {phase}-{plan}-PLAN.md
 
 Proceed with execution?
 ```
+
 </step>
 
 <step name="parse_segments">
+
 **Intelligent segmentation: Parse plan into execution segments.**
 
 Plans are divided into segments by checkpoints. Each segment is routed to optimal execution context (subagent or main).
@@ -151,9 +156,11 @@ Quality maintained through small scope (2-3 tasks per plan)
 ```
 
 See step name="segment_execution" for detailed segment execution loop.
+
 </step>
 
 <step name="segment_execution">
+
 **Detailed segment execution loop for segmented plans.**
 
 **This step applies ONLY to segmented plans (Pattern B: has checkpoints, but they're verify-only).**
@@ -297,18 +304,22 @@ Committing...
 - Plan has decision/human-action checkpoints that affect following tasks
 - Following tasks depend on checkpoint outcome
 - Better to execute in main sequentially in those cases
+
 </step>
 
 <step name="load_prompt">
+
 Read the plan prompt:
 ```bash
 cat .planning/phases/XX-name/{phase}-{plan}-PLAN.md
 ```
 
 This IS the execution instructions. Follow it exactly.
+
 </step>
 
 <step name="previous_phase_check">
+
 Before executing, check if previous phase had issues:
 
 ```bash
@@ -325,9 +336,11 @@ Use AskUserQuestion:
   - "Proceed anyway" - Issues won't block this phase
   - "Address first" - Let's resolve before continuing
   - "Review previous" - Show me the full summary
+
 </step>
 
 <step name="execute">
+
 Execute each task in the prompt. **Deviations are normal** - handle them automatically using embedded rules below.
 
 1. Read the @context files listed in the prompt
@@ -354,9 +367,11 @@ Execute each task in the prompt. **Deviations are normal** - handle them automat
 3. Run overall verification checks from `<verification>` section
 4. Confirm all success criteria from `<success_criteria>` section met
 5. Document all deviations in Summary (automatic - see deviation_documentation below)
+
 </step>
 
 <authentication_gates>
+
 ## Handling Authentication Errors During Execution
 
 **When you encounter authentication errors during `type="auto"` task execution:**
@@ -494,11 +509,13 @@ These are normal gates, not errors.
 - Document them as normal flow, separate from deviations
 
 See references/cli-automation.md "Authentication Gates" section for complete examples.
+
 </authentication_gates>
 
 <step name="execute">
 
 <deviation_rules>
+
 ## Automatic Deviation Handling
 
 **While executing tasks, you WILL discover work not in the plan.** This is normal.
@@ -698,6 +715,7 @@ Enhancements discovered during execution. Not critical - address in future phase
 </deviation_rules>
 
 <deviation_documentation>
+
 ## Documenting Deviations in Summary
 
 After all tasks complete, Summary MUST include deviations section.
@@ -772,6 +790,7 @@ Logged to .planning/ISSUES.md for future consideration:
 </deviation_documentation>
 
 <step name="checkpoint_protocol">
+
 When encountering `type="checkpoint:*"`:
 
 **Critical: Claude automates everything with CLI/API before checkpoints.** Checkpoints are for verification and decisions, not manual work.
@@ -842,9 +861,11 @@ I'll verify after: [verification]
 - If verification fails: inform user, wait for resolution
 
 See references/checkpoints.md and references/cli-automation.md for complete checkpoint guidance.
+
 </step>
 
 <step name="verification_failure_gate">
+
 If any task verification fails:
 
 STOP. Do not continue to next task.
@@ -863,9 +884,11 @@ How to proceed?
 Wait for user decision.
 
 If user chose "Skip", note it in SUMMARY.md under "Issues Encountered".
+
 </step>
 
 <step name="create_summary">
+
 Create `{phase}-{plan}-SUMMARY.md` as specified in the prompt's `<output>` section.
 Use templates/summary.md for structure.
 
@@ -880,9 +903,11 @@ The one-liner must be SUBSTANTIVE:
 **Next Step section:**
 - If more plans exist in this phase: "Ready for {phase}-{next-plan}-PLAN.md"
 - If this is the last plan: "Phase complete, ready for transition"
+
 </step>
 
 <step name="issues_review_gate">
+
 Before proceeding, check SUMMARY.md content:
 
 If "Issues Encountered" is NOT "None":
@@ -903,9 +928,11 @@ If "Next Phase Readiness" mentions blockers or concerns:
   Acknowledged?"
 
   Wait for acknowledgment.
+
 </step>
 
 <step name="update_roadmap">
+
 Update ROADMAP.md:
 
 **If more plans remain in this phase:**
@@ -916,9 +943,11 @@ Update ROADMAP.md:
 - Mark phase complete: status → "Complete"
 - Add completion date
 - Update plan count: "3/3 plans complete"
+
 </step>
 
 <step name="git_commit_plan">
+
 Commit plan completion (PLAN + SUMMARY + code):
 
 ```bash
@@ -942,9 +971,11 @@ Confirm: "Committed: feat({phase}-{plan}): [what shipped]"
 - `feat(01-01):` for phase 1 plan 1
 - `feat(02-03):` for phase 2 plan 3
 - Creates clear, chronological git history
+
 </step>
 
 <step name="offer_next">
+
 **If more plans in this phase:**
 ```
 Plan {phase}-{plan} complete.
@@ -970,13 +1001,16 @@ What's next?
 2. Review phase accomplishments
 3. Done for now
 ```
+
 </step>
 
 </process>
 
 <success_criteria>
+
 - All tasks from PLAN.md completed
 - All verifications pass
 - SUMMARY.md created with substantive content
 - ROADMAP.md updated
+
 </success_criteria>

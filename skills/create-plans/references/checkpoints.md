@@ -23,7 +23,9 @@ Plans execute autonomously. Checkpoints formalize the interaction points where h
 <task type="checkpoint:human-verify" gate="blocking">
   <what-built>[What Claude automated and deployed/built]</what-built>
   <how-to-verify>
+
     [Exact steps to test - URLs, commands, expected behavior]
+
   </how-to-verify>
   <resume-signal>[How to continue - "approved", "yes", or describe issues]</resume-signal>
 </task>
@@ -47,10 +49,12 @@ Plans execute autonomously. Checkpoints formalize the interaction points where h
 <task type="checkpoint:human-verify" gate="blocking">
   <what-built>Deployed to Vercel at https://myapp-abc123.vercel.app</what-built>
   <how-to-verify>
+
     Visit https://myapp-abc123.vercel.app and confirm:
     - Homepage loads without errors
     - Login form is visible
     - No console errors in browser DevTools
+
   </how-to-verify>
   <resume-signal>Type "approved" to continue, or describe issues to fix</resume-signal>
 </task>
@@ -69,12 +73,14 @@ Plans execute autonomously. Checkpoints formalize the interaction points where h
 <task type="checkpoint:human-verify" gate="blocking">
   <what-built>Responsive dashboard layout at /dashboard</what-built>
   <how-to-verify>
+
     1. Run: npm run dev
     2. Visit: http://localhost:3000/dashboard
     3. Desktop (>1024px): Verify sidebar left, content right, header top
     4. Tablet (768px): Verify sidebar collapses to hamburger
     5. Mobile (375px): Verify single column, bottom nav
     6. Check: No layout shift, no horizontal scroll
+
   </how-to-verify>
   <resume-signal>Type "approved" or describe layout issues</resume-signal>
 </task>
@@ -93,11 +99,13 @@ Plans execute autonomously. Checkpoints formalize the interaction points where h
 <task type="checkpoint:human-verify" gate="blocking">
   <what-built>Built macOS app at DerivedData/Build/Products/Debug/App.app</what-built>
   <how-to-verify>
+
     Open App.app and test:
     - App launches without crashes
     - Menu bar icon appears
     - Preferences window opens correctly
     - No visual glitches or layout issues
+
   </how-to-verify>
   <resume-signal>Type "approved" or describe issues</resume-signal>
 </task>
@@ -146,7 +154,9 @@ Plans execute autonomously. Checkpoints formalize the interaction points where h
 <task type="checkpoint:decision" gate="blocking">
   <decision>Select authentication provider</decision>
   <context>
+
     Need user authentication for the app. Three solid options with different tradeoffs.
+
   </context>
   <options>
     <option id="supabase">
@@ -193,8 +203,10 @@ Plans execute autonomously. Checkpoints formalize the interaction points where h
 <task type="checkpoint:human-action" gate="blocking">
   <action>[What human must do - Claude already did everything automatable]</action>
   <instructions>
+
     [What Claude already automated]
     [The ONE thing requiring human action]
+
   </instructions>
   <verification>[What Claude can check afterward]</verification>
   <resume-signal>[How to continue]</resume-signal>
@@ -215,8 +227,10 @@ Plans execute autonomously. Checkpoints formalize the interaction points where h
 <task type="checkpoint:human-action" gate="blocking">
   <action>Complete email verification for SendGrid account</action>
   <instructions>
+
     I created the account and requested verification email.
     Check your inbox for SendGrid verification link and click it.
+
   </instructions>
   <verification>SendGrid API key works: curl test succeeds</verification>
   <resume-signal>Type "done" when email verified</resume-signal>
@@ -235,8 +249,10 @@ Plans execute autonomously. Checkpoints formalize the interaction points where h
 <task type="checkpoint:human-action" gate="blocking">
   <action>Complete 3D Secure authentication</action>
   <instructions>
+
     I created the payment intent: https://checkout.stripe.com/pay/cs_test_abc123
     Visit that URL and complete the 3D Secure verification flow with your test card.
+
   </instructions>
   <verification>Stripe webhook receives payment_intent.succeeded event</verification>
   <resume-signal>Type "done" when payment completes</resume-signal>
@@ -257,9 +273,11 @@ Plans execute autonomously. Checkpoints formalize the interaction points where h
 <task type="checkpoint:human-action" gate="blocking">
   <action>Authenticate Vercel CLI so I can continue deployment</action>
   <instructions>
+
     I tried to deploy but got authentication error.
     Run: vercel login
     This will open your browser - complete the authentication flow.
+
   </instructions>
   <verification>vercel whoami returns your account email</verification>
   <resume-signal>Type "done" when authenticated</resume-signal>
@@ -409,15 +427,19 @@ Bad placement:
   <name>Deploy to Vercel</name>
   <files>.vercel/, vercel.json, package.json</files>
   <action>
+
     1. Run `vercel --yes` to create project and deploy
     2. Capture deployment URL from output
     3. Set environment variables with `vercel env add`
     4. Trigger production deployment with `vercel --prod`
+
   </action>
   <verify>
+
     - vercel ls shows deployment
     - curl {url} returns 200
     - Environment variables set correctly
+
   </verify>
   <done>App deployed to production, URL captured</done>
 </task>
@@ -426,11 +448,13 @@ Bad placement:
 <task type="checkpoint:human-verify" gate="blocking">
   <what-built>Deployed to https://myapp.vercel.app</what-built>
   <how-to-verify>
+
     Visit https://myapp.vercel.app and confirm:
     - Homepage loads correctly
     - All images/assets load
     - Navigation works
     - No console errors
+
   </how-to-verify>
   <resume-signal>Type "approved" or describe issues</resume-signal>
 </task>
@@ -444,15 +468,19 @@ Bad placement:
   <name>Create Upstash Redis database</name>
   <files>.env</files>
   <action>
+
     1. Run `upstash redis create myapp-cache --region us-east-1`
     2. Capture connection URL from output
     3. Write to .env: UPSTASH_REDIS_URL={url}
     4. Verify connection with test command
+
   </action>
   <verify>
+
     - upstash redis list shows database
     - .env contains UPSTASH_REDIS_URL
     - Test connection succeeds
+
   </verify>
   <done>Redis database created and configured</done>
 </task>
@@ -468,15 +496,19 @@ Bad placement:
   <name>Configure Stripe webhooks</name>
   <files>.env, src/app/api/webhooks/route.ts</files>
   <action>
+
     1. Use Stripe API to create webhook endpoint pointing to /api/webhooks
     2. Subscribe to events: payment_intent.succeeded, customer.subscription.updated
     3. Save webhook signing secret to .env
     4. Implement webhook handler in route.ts
+
   </action>
   <verify>
+
     - Stripe API returns webhook endpoint ID
     - .env contains STRIPE_WEBHOOK_SECRET
     - curl webhook endpoint returns 200
+
   </verify>
   <done>Stripe webhooks configured and handler implemented</done>
 </task>
@@ -485,8 +517,10 @@ Bad placement:
 <task type="checkpoint:human-verify" gate="blocking">
   <what-built>Stripe webhook configured via API</what-built>
   <how-to-verify>
+
     Visit Stripe Dashboard > Developers > Webhooks
     Confirm: Endpoint shows https://myapp.com/api/webhooks with correct events
+
   </how-to-verify>
   <resume-signal>Type "yes" if correct</resume-signal>
 </task>
@@ -500,10 +534,12 @@ Bad placement:
 <task type="checkpoint:human-action" gate="blocking">
   <action>Deploy to Vercel</action>
   <instructions>
+
     1. Visit vercel.com/new
     2. Import Git repository
     3. Click Deploy
     4. Copy deployment URL
+
   </instructions>
   <verification>Deployment exists</verification>
   <resume-signal>Paste URL</resume-signal>
@@ -561,9 +597,11 @@ Bad placement:
 <task type="checkpoint:human-action">
   <action>Create .env file</action>
   <instructions>
+
     1. Create .env in project root
     2. Add: DATABASE_URL=...
     3. Add: STRIPE_KEY=...
+
   </instructions>
 </task>
 ```

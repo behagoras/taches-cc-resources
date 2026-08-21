@@ -1,10 +1,13 @@
 # Workflow: Create Exhaustive Domain Expertise Skill
 
 <objective>
+
 Build a comprehensive execution skill that does real work in a specific domain. Domain expertise skills are full-featured build skills with exhaustive domain knowledge in references, complete workflows for the full lifecycle (build → debug → optimize → ship), and can be both invoked directly by users AND loaded by other skills (like create-plans) for domain knowledge.
+
 </objective>
 
 <critical_distinction>
+
 **Regular skill:** "Do one specific task"
 **Domain expertise skill:** "Do EVERYTHING in this domain, with complete practitioner knowledge"
 
@@ -20,16 +23,20 @@ Domain expertise skills:
 - ✅ Are invoked directly by users ("build a macOS app")
 - ✅ Can be loaded by other skills (create-plans reads references for planning)
 - ✅ Cover the FULL lifecycle, not just getting started
+
 </critical_distinction>
 
 <required_reading>
+
 **Read these reference files NOW:**
 1. references/recommended-structure.md
 2. references/core-principles.md
 3. references/use-xml-tags.md
+
 </required_reading>
 
 <process>
+
 ## Step 1: Identify Domain
 
 Ask user what domain expertise to build:
@@ -206,6 +213,7 @@ description: Build {domain things} from scratch through shipping. Full lifecycle
 ---
 
 <essential_principles>
+
 ## How {This Domain} Works
 
 {Domain-specific principles that ALWAYS apply}
@@ -218,9 +226,11 @@ description: Build {domain things} from scratch through shipping. Full lifecycle
 
 ### 3. {Third Principle}
 {Core workflow pattern}
+
 </essential_principles>
 
 <intake>
+
 **Ask the user:**
 
 What would you like to do?
@@ -233,9 +243,11 @@ What would you like to do?
 7. Something else
 
 **Then read the matching workflow from `workflows/` and follow it.**
+
 </intake>
 
 <routing>
+
 | Response | Workflow |
 |----------|----------|
 | 1, "new", "create", "build", "start" | `workflows/build-new-{thing}.md` |
@@ -245,9 +257,11 @@ What would you like to do?
 | 5, "slow", "optimize", "performance", "fast" | `workflows/optimize-performance.md` |
 | 6, "ship", "release", "deploy", "publish" | `workflows/ship-{thing}.md` |
 | 7, other | Clarify, then select workflow or references |
+
 </routing>
 
 <verification_loop>
+
 ## After Every Change
 
 {Domain-specific verification steps}
@@ -268,9 +282,11 @@ Report to the user:
 - "Build: ✓"
 - "Tests: X pass, Y fail"
 - "Ready for you to check [specific thing]"
+
 </verification_loop>
 
 <reference_index>
+
 ## Domain Knowledge
 
 All in `references/`:
@@ -280,9 +296,11 @@ All in `references/`:
 **{Domain Area}:** {list files}
 **Development:** {list files}
 **Shipping:** {list files}
+
 </reference_index>
 
 <workflows_index>
+
 ## Workflows
 
 All in `workflows/`:
@@ -295,6 +313,7 @@ All in `workflows/`:
 | write-tests.md | Write and run tests |
 | optimize-performance.md | Profile and speed up |
 | ship-{thing}.md | Deploy/distribute |
+
 </workflows_index>
 ```
 
@@ -308,13 +327,16 @@ For EACH workflow identified in Step 3:
 # Workflow: {Workflow Name}
 
 <required_reading>
+
 **Read these reference files NOW before {doing the task}:**
 1. references/{relevant-file}.md
 2. references/{another-relevant-file}.md
 3. references/{third-relevant-file}.md
+
 </required_reading>
 
 <process>
+
 ## Step 1: {First Action}
 
 {What to do}
@@ -334,16 +356,20 @@ For EACH workflow identified in Step 3:
 ```bash
 {verification commands}
 ```
+
 </process>
 
 <anti_patterns>
+
 Avoid:
 - {Common mistake 1}
 - {Common mistake 2}
 - {Common mistake 3}
+
 </anti_patterns>
 
 <success_criteria>
+
 A well-{completed task}:
 - {Criterion 1}
 - {Criterion 2}
@@ -351,6 +377,7 @@ A well-{completed task}:
 - Builds/runs without errors
 - Tests pass
 - Feels {native/professional/correct}
+
 </success_criteria>
 ```
 
@@ -369,13 +396,17 @@ For EACH reference file identified in Step 5:
 
 ```xml
 <overview>
+
 Brief introduction to this domain area
+
 </overview>
 
 <options>
+
 ## Available Approaches/Libraries
 
 <option name="Library A">
+
 **When to use:** [specific scenarios]
 **Strengths:** [what it's best at]
 **Weaknesses:** [what it's not good for]
@@ -385,14 +416,18 @@ Brief introduction to this domain area
 ```code
 # Example usage
 ```
+
 </option>
 
 <option name="Library B">
+
 [Same structure]
+
 </option>
 </options>
 
 <decision_tree>
+
 ## Choosing the Right Approach
 
 **If you need [X]:** Use [Library A]
@@ -400,35 +435,44 @@ Brief introduction to this domain area
 **If you have [constraint Z]:** Use [Library C]
 
 **Avoid [Library D] if:** [specific scenarios]
+
 </decision_tree>
 
 <patterns>
+
 ## Common Patterns
 
 <pattern name="Pattern Name">
+
 **Use when:** [scenario]
 **Implementation:** [code example]
 **Considerations:** [trade-offs]
+
 </pattern>
 </patterns>
 
 <anti_patterns>
+
 ## What NOT to Do
 
 <anti_pattern name="Common Mistake">
+
 **Problem:** [what people do wrong]
 **Why it's bad:** [consequences]
 **Instead:** [correct approach]
+
 </anti_pattern>
 </anti_patterns>
 
 <platform_considerations>
+
 ## Platform-Specific Notes
 
 **Windows:** [considerations]
 **macOS:** [considerations]
 **Linux:** [considerations]
 **Mobile:** [if applicable]
+
 </platform_considerations>
 ```
 
@@ -561,6 +605,7 @@ Review entire skill:
 </process>
 
 <success_criteria>
+
 Domain expertise skill is complete when:
 
 - [ ] Comprehensive research completed (5+ web searches)
@@ -577,9 +622,11 @@ Domain expertise skill is complete when:
 - [ ] Referenced in create-plans domain inference table
 - [ ] Passes dual-purpose test: Can be invoked directly AND loaded for knowledge
 - [ ] User can build something professional from scratch through shipping
+
 </success_criteria>
 
 <anti_patterns>
+
 **DON'T:**
 - Copy tutorial content without verification
 - Include only "getting started" material
@@ -602,4 +649,5 @@ Domain expertise skill is complete when:
 - Include verification in every workflow
 - Make it exhaustive, not minimal
 - Test both direct invocation and knowledge reference use cases
+
 </anti_patterns>

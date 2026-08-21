@@ -63,6 +63,7 @@ Logged to .planning/ISSUES.md for future consideration:
 ```
 
 <one_liner_rules>
+
 The one-liner MUST be substantive:
 
 **Good:**
@@ -77,9 +78,11 @@ The one-liner MUST be substantive:
 - "All tasks done"
 
 The one-liner should tell someone what actually shipped.
+
 </one_liner_rules>
 
 <example>
+
 ```markdown
 # Phase 1: Foundation Summary
 
@@ -145,4 +148,5 @@ Logged to .planning/ISSUES.md for future consideration:
 *Phase: 01-foundation*
 *Completed: 2025-01-15*
 ```
+
 </example>

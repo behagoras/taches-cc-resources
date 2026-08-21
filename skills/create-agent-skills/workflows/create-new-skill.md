@@ -1,14 +1,17 @@
 # Workflow: Create a New Skill
 
 <required_reading>
+
 **Read these reference files NOW:**
 1. references/recommended-structure.md
 2. references/skill-structure.md
 3. references/core-principles.md
 4. references/use-xml-tags.md
+
 </required_reading>
 
 <process>
+
 ## Step 1: Adaptive Requirements Gathering
 
 **If user provided context** (e.g., "build a skill for X"):
@@ -120,15 +123,21 @@ mkdir -p ~/.claude/skills/{skill-name}/scripts    # for reusable code
 For each workflow:
 ```xml
 <required_reading>
+
 Which references to load for this workflow
+
 </required_reading>
 
 <process>
+
 Step-by-step procedure
+
 </process>
 
 <success_criteria>
+
 How to know this workflow is done
+
 </success_criteria>
 ```
 
@@ -174,9 +183,11 @@ Invoke the skill and observe:
 - Does output match expectations?
 
 Iterate based on real usage, not assumptions.
+
 </process>
 
 <success_criteria>
+
 Skill is complete when:
 - [ ] Requirements gathered with appropriate questions
 - [ ] API research done if external service involved
@@ -188,4 +199,5 @@ Skill is complete when:
 - [ ] References contain reusable domain knowledge
 - [ ] Slash command exists and works
 - [ ] Tested with real invocation
+
 </success_criteria>
