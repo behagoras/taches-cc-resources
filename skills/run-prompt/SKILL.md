@@ -1,13 +1,13 @@
 ---
 name: run-prompt
-description: Ejecuta los prompts guardados en contextos de sub-agentes independientes.
+description: Ejecuta prompts guardados por número, nombre o namespace de pull request en contextos de sub-agentes independientes.
 ---
 
 ---
 name: run-prompt
-description: Delegate one or more prompts to fresh sub-task contexts with parallel or sequential execution
-argument-hint: <prompt-number(s)-or-name> [--parallel|--sequential]
-allowed-tools: [Read, Task, Bash(ls:*), Bash(mv:*), Bash(git:*)]
+description: Delegate one or more prompts to fresh sub-task contexts by number, name, or case-insensitive pr-<number> namespace with parallel or sequential execution
+argument-hint: <prompt-number(s)-name-or-pr-namespace> [--parallel|--sequential]
+allowed-tools: [Read, Task, "Bash(ls:*)", "Bash(mv:*)", "Bash(git:*)"]
 ---
 
 <context>
@@ -25,15 +25,30 @@ The user will specify which prompt(s) to run via $ARGUMENTS, which can be:
 
 **Single prompt:**
 
-- Empty (no arguments): Run the most recently created prompt (default behavior)
-- A prompt number (e.g., "001", "5", "42")
-- A partial filename (e.g., "user-auth", "dashboard")
+- Empty input runs the most recently created prompt by default
+- A prompt number such as "001", "5", or "42"
+- A partial filename such as "user-auth" or "dashboard"
+- A pull request namespace in any letter case such as "pr-23", "PR-23", or "Pr-23"
 
 **Multiple prompts:**
 
-- Multiple numbers (e.g., "005 006 007")
-- With execution flag: "005 006 007 --parallel" or "005 006 007 --sequential"
+- Multiple numbers such as "005 006 007"
+- An execution flag such as "005 006 007 --parallel" or "005 006 007 --sequential"
 - If no flag specified with multiple prompts, default to --sequential for safety
+
+<resolution_contract>
+
+Resolve selectors only against prompt files already saved in `./.prompts/`. Do not load or inspect a pull request.
+
+1. Search every category recursively. Exclude `completed/` and `INDEX.md`.
+2. With no selector or with `last`, choose the most recently modified active prompt.
+3. When an entire selector matches case-insensitive `(?i)^pr-[1-9][0-9]*$`, normalize it to lowercase `pr-<number>` and find active files matching `./.prompts/**/pr-<number>-*.md`. Treat this value as a namespace, never as numeric prompt `<number>`. Inputs such as `pr-0`, `pr-01`, and `pr-23-extra` follow the ordinary text-matching rule.
+4. Match an ordinary number against the numbered filename prefix. Match ordinary text case-insensitively against filenames.
+5. Use one match directly. If one selector matches several files, list the candidates and ask the user to choose. When the user supplies `--parallel` or `--sequential` with multiple explicit filename stems and every stem resolves uniquely, keep those files as separate selections and do not ask the user to choose among them.
+6. If a selector has no matches, report that selector and list the available active prompts. For a pull request namespace, identify the normalized namespace in the report.
+7. Archive every successfully executed prompt in the `completed/` directory inside its current category.
+
+</resolution_contract>
   </input>
 
 <process>
@@ -41,29 +56,20 @@ The user will specify which prompt(s) to run via $ARGUMENTS, which can be:
 Parse $ARGUMENTS to extract:
 - Prompt numbers/names (all arguments that are not flags)
 - Execution strategy flag (--parallel or --sequential)
+- Case-insensitive pull request namespaces, normalized according to `<resolution_contract>`
 
 <examples>
 - "005" → Single prompt: 005
 - "005 006 007" → Multiple prompts: [005, 006, 007], strategy: sequential (default)
 - "005 006 007 --parallel" → Multiple prompts: [005, 006, 007], strategy: parallel
 - "005 006 007 --sequential" → Multiple prompts: [005, 006, 007], strategy: sequential
+- "PR-23" → Pull request namespace: pr-23
+- "pr-23-api pr-23-ui --parallel" → Multiple filename stems: [pr-23-api, pr-23-ui], strategy: parallel
 </examples>
 </step1_parse_arguments>
 
 <step2_resolve_files>
-For each prompt number/name:
-
-- If empty or "last": Find most recently modified prompt with `find ./.prompts -name '*.md' -not -path '*/completed/*' -not -name 'INDEX.md' | xargs ls -t | head -1`
-- If a number: Search ALL category subfolders for a file starting with that number. Use glob `./.prompts/**/{number}*.md` (exclude completed/). For example, "233" matches `./.prompts/2xx-job-search/233-apply-google.md`.
-- If text: Find files containing that string in the filename across all subfolders
-
-<matching_rules>
-
-- If exactly one match found: Use that file
-- If multiple matches found: List them and ask user to choose
-- If no matches found: Report error and list available prompts
-- IMPORTANT: Search recursively in `./.prompts/**/` — prompts are in category subfolders, NOT at the root
-  </matching_rules>
+Resolve every selector according to `<resolution_contract>`. Preserve the user's selector order after disambiguation.
   </step2_resolve_files>
 
 <step3_execute>
@@ -72,7 +78,7 @@ For each prompt number/name:
 1. Read the complete contents of the prompt file
 2. Delegate as sub-task using Task tool with subagent_type="general-purpose"
 3. Wait for completion
-4. Archive prompt to `completed/` subfolder WITHIN its category (e.g., `./.prompts/2xx-job-search/completed/233-name.md`), NOT to a root `./.prompts/completed/`
+4. Archive the prompt according to `<resolution_contract>`
 5. Commit all work:
    - Stage files YOU modified with `git add [file]` (never `git add .`)
    - Determine appropriate commit type based on changes (fix|feat|refactor|style|docs|test|chore)
@@ -91,7 +97,7 @@ For each prompt number/name:
    (All in one message with multiple tool calls)
    </example>
 3. Wait for ALL to complete
-4. Archive all prompts to their category's `completed/` subfolder
+4. Archive all prompts according to `<resolution_contract>`
 5. Commit all work:
    - Stage files YOU modified with `git add [file]` (never `git add .`)
    - Determine appropriate commit type based on changes (fix|feat|refactor|style|docs|test|chore)
@@ -104,13 +110,13 @@ For each prompt number/name:
 1. Read first prompt file
 2. Spawn Task tool for first prompt
 3. Wait for completion
-4. Archive first prompt
+4. Archive first prompt according to `<resolution_contract>`
 5. Read second prompt file
 6. Spawn Task tool for second prompt
 7. Wait for completion
-8. Archive second prompt
+8. Archive second prompt according to `<resolution_contract>`
 9. Repeat for remaining prompts
-10. Archive all prompts to their category's `completed/` subfolder
+10. Confirm that all successful prompts were archived according to `<resolution_contract>`
 11. Commit all work:
     - Stage files YOU modified with `git add [file]` (never `git add .`)
     - Determine appropriate commit type based on changes (fix|feat|refactor|style|docs|test|chore)
