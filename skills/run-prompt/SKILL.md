@@ -1,6 +1,6 @@
 ---
 name: run-prompt
-description: Ejecuta prompts guardados por número, nombre o namespace de pull request, sin volver a cargar el PR.
+description: Run saved prompts by number, name, or pull request namespace without reloading the pull request.
 ---
 
 ---
