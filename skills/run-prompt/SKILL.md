@@ -1,11 +1,11 @@
 ---
 name: run-prompt
-description: Ejecuta prompts guardados por número, nombre o namespace de pull request en contextos de sub-agentes independientes.
+description: Ejecuta prompts guardados por número, nombre o namespace de pull request, sin volver a cargar el PR.
 ---
 
 ---
 name: run-prompt
-description: Delegate one or more prompts to fresh sub-task contexts by number, name, or case-insensitive pr-<number> namespace with parallel or sequential execution
+description: Delegate saved prompts by number, name, or case-insensitive pr-<number> namespace without reloading the pull request
 argument-hint: <prompt-number(s)-name-or-pr-namespace> [--parallel|--sequential]
 allowed-tools: [Read, Task, "Bash(ls:*)", "Bash(mv:*)", "Bash(git:*)"]
 ---
@@ -28,7 +28,7 @@ The user will specify which prompt(s) to run via $ARGUMENTS, which can be:
 - Empty input runs the most recently created prompt by default
 - A prompt number such as "001", "5", or "42"
 - A partial filename such as "user-auth" or "dashboard"
-- A pull request namespace in any letter case such as "pr-23", "PR-23", or "Pr-23"
+- A pull request namespace such as "pr-23" in any letter case
 
 **Multiple prompts:**
 
@@ -38,15 +38,11 @@ The user will specify which prompt(s) to run via $ARGUMENTS, which can be:
 
 <resolution_contract>
 
-Resolve selectors only against prompt files already saved in `./.prompts/`. Do not load or inspect a pull request.
+Resolve selectors only against active prompt files in `./.prompts/`. Search every category recursively and exclude `completed/` and `INDEX.md`. With no selector or `last`, choose the most recently modified prompt. Match numbers against filename prefixes and other text case-insensitively against filenames.
 
-1. Search every category recursively. Exclude `completed/` and `INDEX.md`.
-2. With no selector or with `last`, choose the most recently modified active prompt.
-3. When an entire selector matches case-insensitive `(?i)^pr-[1-9][0-9]*$`, normalize it to lowercase `pr-<number>` and find active files matching `./.prompts/**/pr-<number>-*.md`. Treat this value as a namespace, never as numeric prompt `<number>`. Inputs such as `pr-0`, `pr-01`, and `pr-23-extra` follow the ordinary text-matching rule.
-4. Match an ordinary number against the numbered filename prefix. Match ordinary text case-insensitively against filenames.
-5. Use one match directly. If one selector matches several files, list the candidates and ask the user to choose. When the user supplies `--parallel` or `--sequential` with multiple explicit filename stems and every stem resolves uniquely, keep those files as separate selections and do not ask the user to choose among them.
-6. If a selector has no matches, report that selector and list the available active prompts. For a pull request namespace, identify the normalized namespace in the report.
-7. Archive every successfully executed prompt in the `completed/` directory inside its current category.
+When an entire selector matches case-insensitive `(?i)^pr-[1-9][0-9]*$`, normalize it to lowercase `pr-<number>` and match `./.prompts/**/pr-<number>-*.md`. Treat it as a namespace, never as numeric prompt `<number>`. Do not load or inspect the pull request.
+
+Run one match directly. Ask the user to choose among multiple matches. Multiple explicit filename stems may run together when each resolves uniquely and the user supplies `--parallel` or `--sequential`. For no match, report the selector, its normalized namespace when applicable, and the available active prompts.
 
 </resolution_contract>
   </input>
@@ -56,7 +52,6 @@ Resolve selectors only against prompt files already saved in `./.prompts/`. Do n
 Parse $ARGUMENTS to extract:
 - Prompt numbers/names (all arguments that are not flags)
 - Execution strategy flag (--parallel or --sequential)
-- Case-insensitive pull request namespaces, normalized according to `<resolution_contract>`
 
 <examples>
 - "005" → Single prompt: 005
@@ -78,7 +73,7 @@ Resolve every selector according to `<resolution_contract>`. Preserve the user's
 1. Read the complete contents of the prompt file
 2. Delegate as sub-task using Task tool with subagent_type="general-purpose"
 3. Wait for completion
-4. Archive the prompt according to `<resolution_contract>`
+4. Archive the prompt in the `completed/` directory inside its current category
 5. Commit all work:
    - Stage files YOU modified with `git add [file]` (never `git add .`)
    - Determine appropriate commit type based on changes (fix|feat|refactor|style|docs|test|chore)
@@ -97,7 +92,7 @@ Resolve every selector according to `<resolution_contract>`. Preserve the user's
    (All in one message with multiple tool calls)
    </example>
 3. Wait for ALL to complete
-4. Archive all prompts according to `<resolution_contract>`
+4. Archive each prompt in the `completed/` directory inside its current category
 5. Commit all work:
    - Stage files YOU modified with `git add [file]` (never `git add .`)
    - Determine appropriate commit type based on changes (fix|feat|refactor|style|docs|test|chore)
@@ -110,13 +105,13 @@ Resolve every selector according to `<resolution_contract>`. Preserve the user's
 1. Read first prompt file
 2. Spawn Task tool for first prompt
 3. Wait for completion
-4. Archive first prompt according to `<resolution_contract>`
+4. Archive the first prompt in the `completed/` directory inside its current category
 5. Read second prompt file
 6. Spawn Task tool for second prompt
 7. Wait for completion
-8. Archive second prompt according to `<resolution_contract>`
+8. Archive the second prompt in the `completed/` directory inside its current category
 9. Repeat for remaining prompts
-10. Confirm that all successful prompts were archived according to `<resolution_contract>`
+10. Confirm that every successful prompt was archived
 11. Commit all work:
     - Stage files YOU modified with `git add [file]` (never `git add .`)
     - Determine appropriate commit type based on changes (fix|feat|refactor|style|docs|test|chore)
@@ -133,7 +128,7 @@ By delegating to a sub-task, the actual implementation work happens in fresh con
 <output>
 <single_prompt_output>
 ✓ Executed: ./.prompts/005-implement-feature.md
-✓ Archived to: ./.prompts/completed/005-implement-feature.md
+✓ Archived to: ./.prompts/1xx-example/completed/005-implement-feature.md
 
 <results>
 [Summary of what the sub-task accomplished]
@@ -147,7 +142,7 @@ By delegating to a sub-task, the actual implementation work happens in fresh con
 - ./.prompts/006-implement-api.md
 - ./.prompts/007-implement-ui.md
 
-✓ All archived to ./.prompts/completed/
+✓ Archived in each prompt's category
 
 <results>
 [Consolidated summary of all sub-task results]
@@ -161,7 +156,7 @@ By delegating to a sub-task, the actual implementation work happens in fresh con
 2. ./.prompts/006-create-migrations.md → Success
 3. ./.prompts/007-seed-data.md → Success
 
-✓ All archived to ./.prompts/completed/
+✓ Archived in each prompt's category
 
 <results>
 [Consolidated summary showing progression through each step]
